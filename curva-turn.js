@@ -45,7 +45,8 @@ function World(k){
 			this.nodes[node.neighbours[2]].neighbours.unshift(no_of_nodes);
 			var new_nodes = span(no_of_nodes, no_of_nodes + k - k0 - 1);
 			node.neighbours = node.neighbours.concat(new_nodes);
-			for(var i = 3; i < k; i++){
+			// below, maybe i helped, maybe - not
+			for(var i = k0; i < k; i++){
 				this.bud(n, i);
 			}
 			node.flourished = true;
