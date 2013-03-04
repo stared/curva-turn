@@ -41,16 +41,25 @@ function World(k){
 		var k0 = node.neighbours.length;
 		var no_of_nodes = this.nodes.length;
 		if(!node.flourished){
-			// the two lines below do not work when k0 = k
-			this.nodes[node.neighbours[0]].neighbours.push(no_of_nodes + k - k0 - 1);
-			this.nodes[node.neighbours[k0 - 1]].neighbours.unshift(no_of_nodes);
-			var new_nodes = span(no_of_nodes, no_of_nodes + k - k0 - 1);
-			node.neighbours = node.neighbours.concat(new_nodes);
-			for(var i = k0; i < k; i++){
-				this.bud(n, i);
+			if(k > k0) {
+				this.nodes[node.neighbours[0]].neighbours.push(no_of_nodes + k - k0 - 1);
+				this.nodes[node.neighbours[k0 - 1]].neighbours.unshift(no_of_nodes);
+				var new_nodes = span(no_of_nodes, no_of_nodes + k - k0 - 1);
+				node.neighbours = node.neighbours.concat(new_nodes);
+				for(var i = k0; i < k; i++){
+					this.bud(n, i);
+				}
+				node.flourished = true;
+				return true;
+			} else if (k == k0) {
+				this.nodes[node.neighbours[0]].neighbours.push(node.neighbours[k0 - 1]);
+				this.nodes[node.neighbours[k0 - 1]].neighbours.unshift(node.neighbours[0]);
+				node.flourished = true;
+				return true;
+			} else {
+				alert("Already too many neighbours!");
+				return false;
 			}
-			node.flourished = true;
-			return true;
 		} else {
 			return false;
 		}
