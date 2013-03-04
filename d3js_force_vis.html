@@ -21,7 +21,7 @@
 var width = 960,
     height = 500;
 
-var color = d3.scale.category20();
+var color = d3.scale.category10();
 
 var force = d3.layout.force()
     .charge(-120)
@@ -32,13 +32,17 @@ var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-nodes = []
-links = []
+var nodes = []
+var links = []
+var links_added = {}
 
-var w = new World(6);
+var add_neigh = 6
+
+var w = new World(add_neigh);
 console.log(w);
 
-var pushNewNodesLinks = function(){
+// Fast but does not include adding links from old nodes
+var pushNewNodes = function(){
   for(var i = nodes.length; i < w.nodes.length; i++){
     var x = w.nodes[i];
     nodes.push({id: i, flourished: x.flourished});
@@ -48,7 +52,25 @@ var pushNewNodesLinks = function(){
       }
     }
   }
+};
 
+// Slow (and dirty), but scans for all edges; can be optimized a lot!
+// (It suffices to scan neighnours of the clicked, or at least - non-finished edges)
+var pushNewNodesLinks = function(){
+  for(var i = nodes.length; i < w.nodes.length; i++){
+    var x = w.nodes[i];
+    nodes.push({id: i, flourished: x.flourished});
+  }
+  for(var i = 0; i < w.nodes.length; i++){
+    var x = w.nodes[i];
+    for(var j = 0; j < x.neighbours.length; j++){
+      k = x.neighbours[j];
+      if(k < i && !links_added.hasOwnProperty(k.toString() + "-" + i.toString()) ){
+        links.push({source: k, target: i});
+        links_added[k.toString() + "-" + i.toString()] = true;
+      }
+    }
+  }
 };
 
 pushNewNodesLinks();
@@ -69,29 +91,36 @@ var node = svg.selectAll(".node").data(nodes);
 node.enter().append("circle")
     .attr("class", "node")
     .attr("r", 5)
-    .style("fill", function(d) { return color(1); })
+    .style("fill", function(d, i) {
+      return (i === 0) ? color(add_neigh): color(0);
+    })
     .on("click", function(d, i){ expand(d, i); });
 
 var expand = function(d, i){
-  w.flourish(i, 6);
-  pushNewNodesLinks();
 
-  link = link.data(force.links());
-  // this assignment is crucial!
-
-  link.enter().append("line")
-      .attr("class", "link")
-      .style("stroke-width", 2);
-
-  node = node.data(force.nodes());
-
-  node.enter().append("circle")
-      .attr("class", "node")
-      .attr("r", 5)
-      .style("fill", function(d) { return color(1); })
-      .on("click", function(d, i){ expand(d, i); });
-
-  force.start();
+  if ( w.flourish(i, add_neigh) ) {
+    node.filter(function(d, j){ return j == i; })
+      .style("fill", function(d, j) { return color(add_neigh); });
+  
+    pushNewNodesLinks();
+  
+    link = link.data(force.links());
+    // this assignment is crucial!
+  
+    link.enter().append("line")
+        .attr("class", "link")
+        .style("stroke-width", 2);
+  
+    node = node.data(force.nodes());
+  
+    node.enter().append("circle")
+        .attr("class", "node")
+        .attr("r", 5)
+        .style("fill", function(d) { return color(0); })
+        .on("click", function(d, i){ expand(d, i); });
+  
+    force.start();
+  }
 
 };
 
