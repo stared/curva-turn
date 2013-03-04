@@ -5,7 +5,8 @@
 * (FIXED) Not updating neighbourhoods of old nodes (or at least not plotting them)
     * Plotting is fine (or - does not even need to know all)
     * I seem to add neighbours when flourishing (oh, but I see - not always[2]).
-* Problem with concave parts, oversaturating and updating when k == k0.
+* (FIXED) Problem with concave parts, oversaturating and updating when k == k0.
+* Problem with visualizing new edges from non-new nodes.
 * Better seed to have always a planar graphs
 * How to  
 
