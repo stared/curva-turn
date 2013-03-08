@@ -14,6 +14,16 @@
 
 </style>
 <body>
+  <div align="left">
+    <input type="radio" name="set_adj" value=4> 4<br>
+    <input type="radio" name="set_adj" value=5> 5<br>
+    <input type="radio" name="set_adj" value=6> <b>6</b><br>
+    <input type="radio" name="set_adj" value=7> 7<br>
+    <input type="radio" name="set_adj" value=8> 8<br>
+    <input type="radio" name="set_adj" value=9> 9
+  </div>
+</body>
+
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="curva-turn.js"></script>
 <script>
@@ -38,7 +48,14 @@ var links_added = {}
 
 var add_neigh = 6
 
-var w = new World(add_neigh);
+d3.selectAll("input").on("click", function() {
+  add_neigh = parseInt(this.value);
+  //  add_neigh = this.value // <- no idea what's wrong with it???
+  // curiously enough, it worked _to some extent_
+
+});
+
+var w = new World(6);
 console.log(w);
 
 // Fast but does not include adding links from old nodes
@@ -98,6 +115,7 @@ node.enter().append("circle")
 
 var expand = function(d, i){
 
+  console.log(add_neigh);
   if ( w.flourish(i, add_neigh) ) {
     node.filter(function(d, j){ return j == i; })
       .style("fill", function(d, j) { return color(add_neigh); });
