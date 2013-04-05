@@ -21,3 +21,8 @@
 
 * [Regge calculus](http://en.wikipedia.org/wiki/Regge_calculus)
 * HyperRogue
+
+## Send to
+
+* Hyperrogue's author
+* John Baez
