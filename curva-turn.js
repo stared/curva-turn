@@ -73,5 +73,29 @@ function World(k){
 		return res;
 	};
 
+
+	this.sightRange = function(n, cutoff){
+		var queue = [ [n, 0] ];
+		var output = {};
+		while(queue.length !== 0){
+			var nx = queue.shift();
+			var node = this.nodes[nx[0]];
+			var x = nx[1];
+			if(node.dist_from !== n){  // in some pathological cases dist might get shorter 
+				node.dist_from = n;
+				node.dist = x;
+				output[nx[0]] = x;
+				if(x < cutoff){
+					for(var i in node.neighbours){
+						queue.push([node.neighbours[i], x + 1]);
+					}
+				}
+			}
+		}
+		this.visible = output;
+	};
+
 }
+
+
 
