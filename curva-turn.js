@@ -74,7 +74,7 @@ function World(k){
 	};
 
 
-	this.sightRange = function(n, cutoff){
+	this.sightRange = function(n, cutoff, if_expand){
 		var queue = [ [n, 0] ];
 		var output = {};
 		while(queue.length !== 0){
@@ -85,6 +85,9 @@ function World(k){
 				node.dist_from = n;
 				node.dist = x;
 				output[nx[0]] = x;
+				if(node.flourished === false && if_expand === true){
+					this.flourish(nx[0], 6);  // now only flat, we will see later
+				}
 				if(x < cutoff){
 					for(var i in node.neighbours){
 						queue.push([node.neighbours[i], x + 1]);
