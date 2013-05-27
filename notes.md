@@ -13,6 +13,12 @@
 * Add exploration mode
 * Put it Twitter's Bootstrap
 
+### Other ideas
+
+* Some strange topologies
+    * Torus, Klein's bottle 
+    * http://math.ucr.edu/home/baez/klein.html#symmetrical
+
 ### Misc
 
 * "neighbours" -> "adj" ?
@@ -21,6 +27,10 @@
 
 * [Regge calculus](http://en.wikipedia.org/wiki/Regge_calculus)
 * HyperRogue
+
+### Get further inspired by
+
+* Two fractal games
 
 ## Send to
 
