@@ -18,6 +18,8 @@
 * Some strange topologies
     * Torus, Klein's bottle 
     * http://math.ucr.edu/home/baez/klein.html#symmetrical
+    * Trees, molecules, fractals, ...
+    * One-way edges
 
 ### Misc
 
@@ -27,6 +29,7 @@
 
 * [Regge calculus](http://en.wikipedia.org/wiki/Regge_calculus)
 * HyperRogue
+* http://www.redblobgames.com/grids/hexagons/ and in general http://www.redblobgames.com/
 
 ### Get further inspired by
 
