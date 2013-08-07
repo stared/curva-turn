@@ -12,6 +12,7 @@
 * Add automated addition (growth)
 * Add exploration mode
 * Put it Twitter's Bootstrap
+* Do some tests before it hurts
 
 ### Other ideas
 
@@ -21,6 +22,7 @@
     * Trees, molecules, fractals, ...
     * One-way edges
 * Things you don't see do not exist (a'al Closure)
+* Bees on honeycomb :)
 
 ### Misc
 

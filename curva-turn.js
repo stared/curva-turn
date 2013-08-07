@@ -75,27 +75,40 @@ function World(k){
 
 
 	this.sightRange = function(n, cutoff, if_expand){
-		var queue = [ [n, 0] ];
-		var output = {};
+		var queue = [ {id: n, dist: 0} ];
+		// var output = {};
+		var visible_nodes = [];
+		var dist = 0;
+		var angle_counter = 0;  // hack for naive vis
+		var range_counter = [0];
 		while(queue.length !== 0){
 			var nx = queue.shift();
-			var node = this.nodes[nx[0]];
-			var x = nx[1];
+			var node = this.nodes[nx.id];
+			visible_nodes.push(node);
+			if (dist !== nx.dist) {
+				angle_counter = 0;
+			}
+			dist = nx.dist;
+			if (range_counter[dist] === undefined) { range_counter[dist] = 0; }
+			range_counter[dist]++;
 			if(node.dist_from !== n){  // in some pathological cases dist might get shorter 
 				node.dist_from = n;
-				node.dist = x;
-				output[nx[0]] = x;
+				node.dist = dist;
+				node.angle = angle_counter++;
+				// output[nx.id] = dist;
 				if(node.flourished === false && if_expand === true){
-					this.flourish(nx[0], 6);  // now only flat, we will see later
+					this.flourish(nx.id, 6);  // now only flat, we will see later
 				}
-				if(x < cutoff){
+				if(dist < cutoff){
 					for(var i in node.neighbours){
-						queue.push([node.neighbours[i], x + 1]);
+						queue.push({id: node.neighbours[i], dist: dist + 1});
 					}
 				}
 			}
 		}
-		this.visible = output;
+		//this.visible = output;
+		return {visible_nodes: visible_nodes, range_counter: range_counter};
+		// I need links as well (or  d3 Voronoi)
 	};
 
 }
