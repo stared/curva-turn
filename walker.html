@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+</style>
+<body>
+</body>
+
+<script src="d3.v3.js"></script>
+<script src="curva-turn.js"></script>
+<script>
+
+var width = 960,
+    height = 500;
+
+var color = d3.scale.category10();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var w = new World(6);
+console.log(w);
+// visible nodes
+w.sightRange(0, 2, true);
+console.log(w.visible);
+
+var tile = svg.selectAll(".class").data(w.visible);
+
+</script>

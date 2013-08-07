@@ -20,6 +20,7 @@
     * http://math.ucr.edu/home/baez/klein.html#symmetrical
     * Trees, molecules, fractals, ...
     * One-way edges
+* Things you don't see do not exist (a'al Closure)
 
 ### Misc
 
@@ -39,3 +40,14 @@
 
 * Hyperrogue's author
 * John Baez
+* Manish Goregaokar
+
+## Architecture
+
+* Graph import
+* Graph export
+* Graph join
+
+
+* Ego-vis
+* 
