@@ -84,14 +84,15 @@ function World(k){
 		while(queue.length !== 0){
 			var nx = queue.shift();
 			var node = this.nodes[nx.id];
-			visible_nodes.push(node);
-			if (dist !== nx.dist) {
-				angle_counter = 0;
-			}
-			dist = nx.dist;
-			if (range_counter[dist] === undefined) { range_counter[dist] = 0; }
-			range_counter[dist]++;
-			if(node.dist_from !== n){  // in some pathological cases dist might get shorter 
+			if(node.dist_from !== n){
+				visible_nodes.push(node);
+				if (dist !== nx.dist) {
+					angle_counter = 0;
+				}
+				dist = nx.dist;
+				if (range_counter[dist] === undefined) { range_counter[dist] = 0; }
+				range_counter[dist]++;
+			  // in some pathological cases dist might get shorter 
 				node.dist_from = n;
 				node.dist = dist;
 				node.angle = angle_counter++;

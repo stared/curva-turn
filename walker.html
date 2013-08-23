@@ -23,18 +23,36 @@
 var width = 960,
     height = 500;
 
-var color = d3.scale.category10();
+
+var color = d3.scale.category10(),
+		spacing = 20;
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
 var w = new World(6);
-console.log(w);
-// visible nodes
-w.sightRange(0, 2, true);
-console.log(w.visible);
 
-var tile = svg.selectAll(".class").data(w.visible);
+var sight = w.sightRange(0, 4, true);
+
+console.log(sight);
+
+// Let's start with a naive, clock-like visualization
+var tile = svg.selectAll(".tile").data(sight.visible_nodes);
+
+tile.enter()
+	.append("circle")
+		.attr("class", "tile")
+		.attr("r", 5)
+		.attr("cx", function (d) {
+			return width/2 + spacing * d.dist * Math.cos(2 * Math.PI * d.angle / sight.range_counter[d.dist]);
+		})
+		.attr("cy", function (d) {
+			return height/2 + spacing * d.dist * Math.sin(2 * Math.PI * d.angle / sight.range_counter[d.dist]);
+		})
+		.style("fill", function (d) {
+			return color(d.neighbours.length)  // mixing American and British won't go well
+		});
+
 
 </script>
