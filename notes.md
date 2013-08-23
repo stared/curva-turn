@@ -13,6 +13,7 @@
 * Add exploration mode
 * Put it Twitter's Bootstrap
 * Do some tests before it hurts
+* Sight range should depend on curvature! (otherwise to many points for curved spaces)
 
 ### Other ideas
 

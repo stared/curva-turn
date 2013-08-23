@@ -12,6 +12,11 @@
   stroke-opacity: .6;
 }
 
+.tile.reach:hover {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
 </style>
 <body>
 </body>
@@ -25,7 +30,7 @@ var width = 960,
 
 
 var color = d3.scale.category10(),
-		spacing = 20;
+		spacing = 30;
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -33,26 +38,57 @@ var svg = d3.select("body").append("svg")
 
 var w = new World(6);
 
-var sight = w.sightRange(0, 4, true);
-
-console.log(sight);
 
 // Let's start with a naive, clock-like visualization
-var tile = svg.selectAll(".tile").data(sight.visible_nodes);
 
-tile.enter()
-	.append("circle")
-		.attr("class", "tile")
-		.attr("r", 5)
-		.attr("cx", function (d) {
-			return width/2 + spacing * d.dist * Math.cos(2 * Math.PI * d.angle / sight.range_counter[d.dist]);
+var redrawClocklike = function (node_id) {
+
+	var sight = w.sightRange(node_id, 8, true);
+	// console.log(sight);
+
+	var tile = svg.selectAll(".tile").data(sight.visible_nodes, function (d) { return d.id; });
+
+	tile.enter()
+		.append("circle")
+		.style("opacity", 0.0001);
+
+	tile
+		.attr("class", function (d) {
+			return inList(d.id, sight.visible_nodes[0].neighbours) ? "tile reach" : "tile";
 		})
-		.attr("cy", function (d) {
-			return height/2 + spacing * d.dist * Math.sin(2 * Math.PI * d.angle / sight.range_counter[d.dist]);
-		})
-		.style("fill", function (d) {
-			return color(d.neighbours.length)  // mixing American and British won't go well
+		.attr("r", 8)
+		.on("click", function(d){
+			if (inList(d.id, sight.visible_nodes[0].neighbours)) {
+				// console.log("Keep moving...");
+				redrawClocklike(d.id);
+			} else {
+				console.log("Out of range!");
+			}
 		});
+
+	tile
+		.transition().duration(1000)
+			.attr("cx", function (d) {
+				return width/2 + spacing * d.dist * Math.cos(2 * Math.PI * d.angle / sight.range_counter[d.dist]);
+			})
+			.attr("cy", function (d) {
+				return height/2 + spacing * d.dist * Math.sin(2 * Math.PI * d.angle / sight.range_counter[d.dist]);
+			})
+			.style("fill", function (d) {
+				// return color(d.neighbours.length)  // mixing American and British won't go well
+				return color(d.id % 20);  // just now for tracking
+			})
+			.style("opacity", function (d) {
+				return 1 - d.dist / (sight.range_counter.length - 1); 
+				// one more invisible layer for smoother transitions
+			});
+
+	tile.exit()
+		.remove();
+
+};
+
+redrawClocklike(0);
 
 
 </script>

@@ -15,7 +15,7 @@ function World(k){
 	this.nodes = [];
 
 	this.init = function(k){
-		this.nodes.push({neighbours: span(1,k), flourished: true});
+		this.nodes.push({neighbours: span(1,k), flourished: true, id:0});
 		for(var i = 0; i < k; i++){
 			this.bud(0, i);
 		}
@@ -27,7 +27,7 @@ function World(k){
 		if(! this.nodes[children[i]]){
 			var node_on_left = children[mod(i + 1, children.length)];  // but "mod vs %" used only once, for init...
 			var node_on_right = children[mod(i - 1, children.length)];   // we look outwards; counterclockwise conv
-			this.nodes[children[i]] = {neighbours: [node_on_left, n, node_on_right], flourished: false};
+			this.nodes[children[i]] = {neighbours: [node_on_left, n, node_on_right], flourished: false, id:children[i]};
 			return true;
 		} else {
 			return false;
@@ -57,7 +57,7 @@ function World(k){
 				node.flourished = true;
 				return true;
 			} else {
-				alert("Already too many neighbours!");
+				console.log("Already too many neighbours!");
 				return false;
 			}
 		} else {
@@ -82,7 +82,7 @@ function World(k){
 		var angle_counter = 0;  // hack for naive vis
 		var range_counter = [0];
 		while(queue.length !== 0){
-			var nx = queue.shift();
+			var nx = queue.shift();  // why pop() does not work here?
 			var node = this.nodes[nx.id];
 			if(node.dist_from !== n){
 				visible_nodes.push(node);
@@ -92,7 +92,7 @@ function World(k){
 				dist = nx.dist;
 				if (range_counter[dist] === undefined) { range_counter[dist] = 0; }
 				range_counter[dist]++;
-			  // in some pathological cases dist might get shorter 
+				// in some pathological cases dist might get shorter 
 				node.dist_from = n;
 				node.dist = dist;
 				node.angle = angle_counter++;
@@ -113,6 +113,16 @@ function World(k){
 	};
 
 }
+
+
+var inList = function(x, list){
+	for(var i = 0; i < list.length; i++){
+		if (list[i] === x){
+			return true;
+		}
+	}
+	return false;
+};
 
 
 
