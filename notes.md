@@ -22,6 +22,9 @@
     * http://math.ucr.edu/home/baez/klein.html#symmetrical
     * Trees, molecules, fractals, ...
     * One-way edges
+    * Persisten homology
+    * Renormalization
+    * Feynman diagrams
 * Things you don't see do not exist (a'al Closure)
 * Bees on honeycomb :)
 
